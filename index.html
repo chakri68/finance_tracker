@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Finance Tracker</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+      integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;1,100;1,400;1,700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles/global.css" />
+    <link rel="stylesheet" href="styles/sass/main.css" />
+  </head>
+
+  <body>
+    <div id="popups"></div>
+    <main>
+      <h1>Finance Tracker</h1>
+
+      <div class="toolbar">
+        <button id="add-account" class="toolbar-item" title="Add New Account">
+          <i class="fa-solid fa-plus"></i>
+        </button>
+        <button id="delete-account" class="toolbar-item" title="Delete Account">
+          <i class="fa-solid fa-trash"></i>
+        </button>
+      </div>
+      <div id="account-cards"></div>
+      <button id="trial">OPEN</button>
+    </main>
+
+    <!-- Templates -->
+    <dialog id="confirmation-dialog">
+      <button class="dialog-close">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+      <h4>Are you sure?</h4>
+      <div class="confirmation-dialog-buttons">
+        <button
+          class="confirmation-dialog-button"
+          id="confirmation-dialog-cancel"
+        >
+          Cancel
+        </button>
+        <button
+          class="confirmation-dialog-button"
+          id="confirmation-dialog-confirm"
+        >
+          Confirm
+        </button>
+      </div>
+    </dialog>
+    <template id="account-card-template">
+      <div class="account-card">
+        <div class="account-card-header">
+          <div class="account-title">Account</div>
+          <div class="account-balance">Balance</div>
+        </div>
+        <div class="account-card-body">
+          <div class="account-income">Income</div>
+          <div class="account-expenses">Expenses</div>
+        </div>
+      </div>
+    </template>
+
+    <template id="transaction-template">
+      <div class="transaction">
+        <div class="transaction-header">
+          <div class="transaction-title">Transaction</div>
+          <div class="transaction-date">Date</div>
+        </div>
+        <div class="transaction-body">
+          <div class="transaction-amount">Amount</div>
+          <div class="transaction-description">Description</div>
+        </div>
+      </div>
+    </template>
+
+    <template id="form-template">
+      <div class="dynamic-form"></div>
+    </template>
+
+    <template id="dialog-template">
+      <dialog class="dynamic-dialog">
+        <button class="dialog-close">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+        <h3 class="title"></h3>
+        <h5 class="subtitle"></h5>
+        <div class="content"></div>
+        <div class="actions"></div>
+      </dialog>
+    </template>
+
+    <template class="form-field-template" id="default">
+      <div class="dynamic-form-field default">
+        <label class="label"></label>
+        <input class="input" />
+      </div>
+    </template>
+
+    <!-- Templates Done -->
+
+    <script type="module" src="scripts/main.js"></script>
+  </body>
+</html>

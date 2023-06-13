@@ -1,0 +1,144 @@
+$caribbean-current: #006466ff;
+$midnight-green: #065a60ff;
+$midnight-green-2: #0b525bff;
+$midnight-green-3: #144552ff;
+$charcoal: #1b3a4bff;
+$prussian-blue: #212f45ff;
+$space-cadet: #272640ff;
+$dark-purple: #312244ff;
+$dark-purple-2: #3e1f47ff;
+$palatinate: #4d194dff;
+
+$border-radius-regular: 0.5rem;
+$border-radius-bold: 0.8rem;
+
+// Scollbars
+*::-webkit-scrollbar {
+    width: 16px;
+}
+
+*::-webkit-scrollbar-track {
+    border-radius: 8px;
+    background-color: #e7e7e7;
+    border: 1px solid #cacaca;
+}
+
+*::-webkit-scrollbar-thumb {
+    border-radius: 8px;
+    border: 3px solid transparent;
+    background-clip: content-box;
+    background-color: $space-cadet;
+}
+
+body {
+    background-color: $prussian-blue;
+}
+
+main{
+    background-color: $dark-purple;
+    border-radius: $border-radius-regular;
+    width: clamp(500px, 60%, 700px);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    translate: -50% -50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 1rem;
+    gap: 1rem;
+    box-shadow: 0px 0px 90px -25px darken($color: $prussian-blue, $amount: 50);
+    & .toolbar{
+        display: flex;
+        gap: 0.15rem;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        & .toolbar-item{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 2rem;
+            aspect-ratio: 1;
+            padding: 0.25rem;
+        }
+    }
+}
+
+dialog {
+    position: relative;
+    padding: 0.75rem;
+    background-color: lighten($color: (
+            $prussian-blue),
+        $amount: 35
+    );
+    border-radius: $border-radius-bold;
+    overflow: visible;
+    border: 0.15rem solid darken($color: $prussian-blue, $amount: 15);
+    outline: none;
+
+&::backdrop {
+    background-color: opacify($color: darken($color: $prussian-blue, $amount: 10), $amount: .75);
+    // opacity: 0.85;
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+}
+& .dialog-close{
+    position: absolute;
+    top: -1.5rem;
+    right: -1.5rem;
+    padding: 0;
+    margin: 0;
+    border: none;
+    border-radius: 100%;
+    width: 1.25rem;
+    display: grid;
+    place-items: center;
+    aspect-ratio: 1;
+    background-color: transparent;
+    &:hover{
+        background-color: lighten($color: $prussian-blue, $amount: 10);
+        cursor: pointer;
+    }
+    & i{
+        color: white;
+
+    }
+}
+}
+
+dialog.dynamic-dialog{
+    border-radius: 0.5rem;
+    .title{
+        text-align: center;
+        padding: 0.25rem;
+        margin: 0;
+        font-size: 1.5rem;
+        border-bottom: 1px solid $charcoal;
+        text-transform: uppercase;
+    }
+    .subtitle{
+        text-align: center;
+        padding: 0.25rem;
+        margin: 0;
+        margin-bottom: 0.25rem;
+        font-size: 0.7125rem;
+        font-weight: 300;
+        text-transform: uppercase;
+    }
+}
+
+.dynamic-form-field{
+    display: grid;
+    grid-template-columns: 4rem 1fr;
+    padding: 0.25rem;
+    margin: 0;
+    gap: 0.5rem;
+    align-items: center;
+    & .label{
+        text-transform: uppercase;
+        font-size: 0.75rem;
+        font-weight: 300;
+    }
+}
