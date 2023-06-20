@@ -6,7 +6,7 @@
  * @property {string} label Label for the form field
  * @property {string?} [placeholder] Placeholder for the form field
  * @property {boolean?} [required] Is the form field required
- * @property {string?} [parentSelector] Is the form field required
+ * @property {string?} [parentSelector] Selector for parent (Inserts the element into the DOM tree if specified)
  */
 
 /**
