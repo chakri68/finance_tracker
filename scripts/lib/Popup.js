@@ -34,8 +34,12 @@ export class Popup {
       subtitle,
       dynamicDomElement.domElement,
       (success) => {
-        callback(success, success ? dynamicDomElement.getData() : null);
-        this.remove();
+        this.domElement.classList.add("closing");
+        setTimeout(() => {
+          this.domElement.close();
+          callback(success, success ? dynamicDomElement.getData() : null);
+          this.remove();
+        }, 300); // 300 is 0.3ms -> Time for the dialogClose animation
       }
     );
     document.querySelector(parentSelector).appendChild(this.domElement);
@@ -77,12 +81,10 @@ export class PopupGenerator {
   static generate(title, subtitle, domElement, callback) {
     const save = () => {
       callback(true);
-      clone.close();
     };
 
     const cancel = () => {
       callback(false);
-      clone.close();
     };
 
     let template = /** @type {HTMLTemplateElement} */ (
@@ -109,10 +111,10 @@ export class PopupGenerator {
     // create some default actions
     const saveBtn = document.createElement("button");
     const cancelBtn = document.createElement("button");
-    saveBtn.classList.add("action-btn");
+    saveBtn.classList.add("action-btn", "primary-btn");
     saveBtn.innerText = "Save";
     cancelBtn.innerText = "Cancel";
-    cancelBtn.classList.add("action-btn");
+    cancelBtn.classList.add("action-btn", "secondary-btn");
     saveBtn.addEventListener("click", save);
     cancelBtn.addEventListener("click", cancel);
     actionsEl.appendChild(cancelBtn);
