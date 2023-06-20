@@ -8,7 +8,7 @@ console.log("main.js is connected");
 
 const html = String.raw;
 
-// Dialogs
+// Pre-made Dialogs
 document
   .querySelectorAll("dialog:not(.dynamic-dialog)")
   .forEach((/** @type {HTMLDialogElement} */ dialog) => {
@@ -32,15 +32,42 @@ document
     });
   });
 
-// Setup confirmation dialog
-const confirmationDialog = document.getElementById("confirmation-dialog");
-
 // Toolbar Setup
 const addAccountBtn = document.getElementById("add-account");
 addAccountBtn.addEventListener("click", () => {
-  /** @type {HTMLDialogElement} */ (
-    document.getElementById("account-dialog")
-  ).showModal();
+  new FormPopup(
+    "Add Account",
+    "",
+    [
+      {
+        id: "account-name",
+        label: "Account Name",
+        name: "name",
+        type: "text",
+        placeholder: "lorem ipsum",
+        required: true,
+      },
+      {
+        id: "account-amount",
+        label: "Amount",
+        name: "amount",
+        type: "number",
+        placeholder: "0.0",
+        required: false,
+      },
+      {
+        id: "account-color",
+        label: "Accent Color",
+        name: "color",
+        type: "color",
+        placeholder: "red",
+        required: false,
+      },
+    ],
+    (s, d) => {
+      if (s) console.log("NEW ACCOUNT", { d });
+    }
+  ).domElement.showModal();
 });
 
 const deleteAccountBtn = document.getElementById("delete-account");
