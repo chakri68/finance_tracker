@@ -75,12 +75,23 @@ export class PopupGenerator {
    * @param {closePopupCallback} callback The callback to be called when the dialog is closed
    */
   static generate(title, subtitle, domElement, callback) {
+    const save = () => {
+      callback(true);
+      clone.close();
+    };
+
+    const cancel = () => {
+      callback(false);
+      clone.close();
+    };
+
     let template = /** @type {HTMLTemplateElement} */ (
       document.querySelector(`#dialog-template`)
     );
     let clone = /** @type {HTMLDialogElement} */ (
       template.content.firstElementChild.cloneNode(true)
     );
+    clone.classList.add("dynamic-popup");
     let titleEl = /** @type {HTMLElement} */ (clone.querySelector(".title"));
     let subtitleEl = /** @type {HTMLElement} */ (
       clone.querySelector(".subtitle")
@@ -95,6 +106,18 @@ export class PopupGenerator {
     subtitleEl.innerText = subtitle;
     contentEl.appendChild(domElement);
 
+    // create some default actions
+    const saveBtn = document.createElement("button");
+    const cancelBtn = document.createElement("button");
+    saveBtn.classList.add("action-btn");
+    saveBtn.innerText = "Save";
+    cancelBtn.innerText = "Cancel";
+    cancelBtn.classList.add("action-btn");
+    saveBtn.addEventListener("click", save);
+    cancelBtn.addEventListener("click", cancel);
+    actionsEl.appendChild(cancelBtn);
+    actionsEl.appendChild(saveBtn);
+
     // Add event listeners
     clone.addEventListener("click", (event) => {
       var rect = clone.getBoundingClientRect();
@@ -104,19 +127,16 @@ export class PopupGenerator {
         rect.left <= event.clientX &&
         event.clientX <= rect.left + rect.width;
       if (!isInDialog) {
-        callback(false);
-        clone.close();
+        cancel();
       }
     });
 
     clone.querySelector(".actions > .save")?.addEventListener("click", () => {
-      callback(true);
-      clone.close();
+      save();
     });
 
     clone.querySelector(".dialog-close").addEventListener("click", () => {
-      callback(false);
-      clone.close();
+      cancel();
     });
 
     return clone;
