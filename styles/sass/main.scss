@@ -12,79 +12,81 @@ $palatinate: #4d194dff;
 $border-radius-regular: 0.5rem;
 $border-radius-bold: 0.8rem;
 
+$btn-flex-gap: 0.15rem;
+
 // Scollbars
 *::-webkit-scrollbar {
-    width: 16px;
+  width: 16px;
 }
 
 *::-webkit-scrollbar-track {
-    border-radius: 8px;
-    background-color: #e7e7e7;
-    border: 1px solid #cacaca;
+  border-radius: 8px;
+  background-color: #e7e7e7;
+  border: 1px solid #cacaca;
 }
 
 *::-webkit-scrollbar-thumb {
-    border-radius: 8px;
-    border: 3px solid transparent;
-    background-clip: content-box;
-    background-color: $space-cadet;
+  border-radius: 8px;
+  border: 3px solid transparent;
+  background-clip: content-box;
+  background-color: $space-cadet;
 }
 
 body {
-    background-color: $prussian-blue;
+  background-color: $prussian-blue;
 }
 
-main{
-    background-color: $dark-purple;
-    border-radius: $border-radius-regular;
-    width: clamp(500px, 60%, 700px);
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    translate: -50% -50%;
+main {
+  background-color: $dark-purple;
+  border-radius: $border-radius-regular;
+  width: clamp(500px, 60%, 700px);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  translate: -50% -50%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 1rem;
+  gap: 1rem;
+  box-shadow: 0px 0px 90px -25px darken($color: $prussian-blue, $amount: 50);
+  & .toolbar {
     display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: center;
-    padding: 1rem;
-    gap: 1rem;
-    box-shadow: 0px 0px 90px -25px darken($color: $prussian-blue, $amount: 50);
-    & .toolbar{
-        display: flex;
-        gap: 0.15rem;
-        flex-direction: row;
-        flex-wrap: nowrap;
-        overflow-x: auto;
-        & .toolbar-item{
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 2rem;
-            aspect-ratio: 1;
-            padding: 0.25rem;
-        }
+    gap: $btn-flex-gap;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    & .toolbar-item {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 2rem;
+      aspect-ratio: 1;
+      padding: 0.25rem;
     }
+  }
 }
 
 dialog {
-    position: relative;
-    padding: 0.75rem;
-    background-color: lighten($color: (
-            $prussian-blue),
-        $amount: 35
-    );
-    border-radius: $border-radius-bold;
-    overflow: visible;
-    border: 0.15rem solid darken($color: $prussian-blue, $amount: 15);
-    outline: none;
+  position: relative;
+  padding: 0.75rem;
+  background-color: lighten($color: $prussian-blue, $amount: 35);
+  border-radius: $border-radius-bold;
+  overflow: visible;
+  border: 0.15rem solid darken($color: $prussian-blue, $amount: 15);
+  outline: none;
 
-&::backdrop {
-    background-color: opacify($color: darken($color: $prussian-blue, $amount: 10), $amount: .75);
+  &::backdrop {
+    background-color: opacify(
+      $color: darken($color: $prussian-blue, $amount: 10),
+      $amount: 0.75
+    );
     // opacity: 0.85;
     backdrop-filter: blur(5px);
     -webkit-backdrop-filter: blur(5px);
-}
-& .dialog-close{
+  }
+  & .dialog-close {
     position: absolute;
     top: -1.5rem;
     right: -1.5rem;
@@ -97,48 +99,69 @@ dialog {
     place-items: center;
     aspect-ratio: 1;
     background-color: transparent;
-    &:hover{
-        background-color: lighten($color: $prussian-blue, $amount: 10);
-        cursor: pointer;
+    &:hover {
+      background-color: lighten($color: $prussian-blue, $amount: 10);
+      cursor: pointer;
     }
-    & i{
-        color: white;
-
+    & i {
+      color: white;
     }
-}
-}
-
-dialog.dynamic-dialog{
-    border-radius: 0.5rem;
-    .title{
-        text-align: center;
-        padding: 0.25rem;
-        margin: 0;
-        font-size: 1.5rem;
-        border-bottom: 1px solid $charcoal;
-        text-transform: uppercase;
-    }
-    .subtitle{
-        text-align: center;
-        padding: 0.25rem;
-        margin: 0;
-        margin-bottom: 0.25rem;
-        font-size: 0.7125rem;
-        font-weight: 300;
-        text-transform: uppercase;
-    }
+  }
 }
 
-.dynamic-form-field{
-    display: grid;
-    grid-template-columns: 4rem 1fr;
+dialog.dynamic-dialog {
+  border-radius: 0.5rem;
+  .title {
+    text-align: center;
     padding: 0.25rem;
     margin: 0;
-    gap: 0.5rem;
-    align-items: center;
-    & .label{
-        text-transform: uppercase;
-        font-size: 0.75rem;
-        font-weight: 300;
+    font-size: 1.5rem;
+    border-bottom: 1px solid $charcoal;
+    text-transform: uppercase;
+  }
+  .subtitle {
+    text-align: center;
+    padding: 0.25rem;
+    margin: 0;
+    margin-bottom: 0.25rem;
+    font-size: 0.7125rem;
+    font-weight: 300;
+    text-transform: uppercase;
+  }
+}
+
+dialog.dynamic-popup {
+  .actions {
+    margin-top: 1rem;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    gap: $btn-flex-gap;
+    .action-btn {
+      width: 100%;
+      &.primary-btn {
+        background-color: $caribbean-current;
+      }
+      &.secondary-btn {
+        background-color: $prussian-blue;
+      }
     }
+  }
+}
+
+.dynamic-form-field {
+  display: grid;
+  grid-template-columns: 4rem 1fr;
+  padding: 0.25rem;
+  margin: 0;
+  gap: 0.5rem;
+  align-items: center;
+  & .label {
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    font-weight: 300;
+  }
+  & .input {
+    width: 100%;
+  }
 }
