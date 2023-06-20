@@ -1,10 +1,39 @@
 "use strict";
 
-import { Form, FormGenerator } from "./lib/Form.js";
-import { FormField, FormFieldGenerator } from "./lib/FormFields.js";
-import { FormPopup, Popup } from "./lib/Popup.js";
+/**
+ * @typedef StoredAccountCard
+ * @property {string} name
+ * @property {number} amount
+ * @property {string} color
+ */
+
+import { AccountCard } from "./lib/AccountCard.js";
+import { FormPopup } from "./lib/Popup.js";
 
 console.log("main.js is connected");
+
+// Account Cards Setup
+/**
+ * @type {Array<AccountCard>}
+ */
+const accountCards = [];
+
+/**
+ * @type {Array<StoredAccountCard>}
+ */
+const data = JSON.parse(localStorage.getItem("data") || "[]");
+
+data.forEach((card) => {
+  accountCards.push(
+    new AccountCard(
+      card.name,
+      card.amount,
+      card.color,
+      "#account-card-template",
+      "#account-cards"
+    )
+  );
+});
 
 const html = String.raw;
 
@@ -65,16 +94,20 @@ addAccountBtn.addEventListener("click", () => {
       },
     ],
     (s, d) => {
-      if (s) console.log("NEW ACCOUNT", { d });
+      if (s) {
+        accountCards.push(
+          new AccountCard(
+            d["name"],
+            d["amount"],
+            d["color"],
+            "#account-card-template",
+            "#account-cards"
+          )
+        );
+      }
     }
   ).domElement.showModal();
 });
-
-const deleteAccountBtn = document.getElementById("delete-account");
-const transactionDialog = document.getElementById("transaction-dialog");
-
-// Account Cards Setup
-const accountCards = document.getElementById("account-cards");
 
 // Utility Functions
 /**
@@ -134,4 +167,26 @@ document.getElementById("trial").addEventListener("click", () => {
       console.log({ success, data });
     }
   ).domElement.showModal();
+});
+
+// Handle window unloading
+window.addEventListener("beforeunload", () => {
+  alert(
+    "You have unsaved data. Please save them before you exit to prevent any progress"
+  );
+});
+
+document.addEventListener("keydown", (event) => {
+  // Check if the "Ctrl" key and "S" key are pressed simultaneously
+  if (event.ctrlKey && event.key === "s") {
+    event.preventDefault();
+    const jsonData = JSON.stringify(
+      accountCards.map((card) => {
+        const { domElement, ...props } = card;
+        return props;
+      })
+    );
+    localStorage.setItem("data", jsonData);
+    console.log("Data Saved!");
+  }
 });
