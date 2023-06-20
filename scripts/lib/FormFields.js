@@ -39,14 +39,15 @@ export class FormField {
     this.label = label;
     this.placeholder = placeholder;
     this.required = required;
-    this.domElement = FormFieldGenerator.generate(this);
+    const { domElement, inputElement } = FormFieldGenerator.generate(this);
+    this.domElement = domElement;
+    this.inputElement = inputElement;
     if (parentSelector)
       document.querySelector(parentSelector).appendChild(this.domElement);
   }
 
   getValue() {
-    // @ts-ignore
-    return this.domElement.value;
+    return this.inputElement.value;
   }
 }
 
@@ -78,7 +79,7 @@ export class FormFieldGenerator {
         input.id = formField.id;
         label.innerText = formField.label;
         label.htmlFor = formField.id;
-        return clone;
+        return { domElement: clone, inputElement: input };
       default:
         try {
           let template = /** @type {HTMLTemplateElement} */ (
@@ -100,7 +101,7 @@ export class FormFieldGenerator {
           input.required = formField.required;
           label.innerText = formField.label;
           label.htmlFor = formField.id;
-          return clone;
+          return { domElement: clone, inputElement: input };
         } catch (err) {
           console.error(
             `Error while generating HTML ELement for ${formField}: ${err}`
