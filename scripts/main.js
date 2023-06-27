@@ -1,39 +1,43 @@
 "use strict";
 
-/**
- * @typedef StoredAccountCard
- * @property {string} name
- * @property {number} amount
- * @property {string} color
- */
-
-import { AccountCard } from "./lib/AccountCard.js";
+import { AccountCard, AccountHandler } from "./lib/AccountCard.js";
 import { FormPopup } from "./lib/Popup.js";
+import { ToastManager } from "./lib/Toast.js";
 
 console.log("main.js is connected");
 
-// Account Cards Setup
-/**
- * @type {Array<AccountCard>}
- */
-const accountCards = [];
+const data = localStorage.getItem("data");
 
-/**
- * @type {Array<StoredAccountCard>}
- */
-const data = JSON.parse(localStorage.getItem("data") || "[]");
-
-data.forEach((card) => {
-  accountCards.push(
-    new AccountCard(
-      card.name,
-      card.amount,
-      card.color,
-      "#account-card-template",
-      "#account-cards"
-    )
-  );
+// Initilaize Toast manager
+const toastManager = new ToastManager({
+  containerId: "#toast-container",
+  templateSelector: "#toast-template",
 });
+
+// Initilaize Account Handler
+const accountHandler = new AccountHandler({
+  parentSelector: "#account-cards",
+  templateSelector: "#account-card-template",
+});
+
+try {
+  if (data) {
+    accountHandler.restore(JSON.parse(data));
+    toastManager.createToast({
+      message: "Restored Accounts Successfully",
+      title: "Success!",
+      type: "success",
+    });
+    console.log("RESTORE SUCCESSFUL");
+  }
+} catch (error) {
+  toastManager.createToast({
+    message: "Restoration Failed",
+    title: "Error!",
+    type: "error",
+  });
+  console.error("RESTORE FAILED", error);
+}
 
 const html = String.raw;
 
@@ -95,15 +99,7 @@ addAccountBtn.addEventListener("click", () => {
     ],
     (s, d) => {
       if (s) {
-        accountCards.push(
-          new AccountCard(
-            d["name"],
-            d["amount"],
-            d["color"],
-            "#account-card-template",
-            "#account-cards"
-          )
-        );
+        accountHandler.addAccount(d["name"], d["amount"], d["color"]);
       }
     }
   ).domElement.showModal();
@@ -117,11 +113,6 @@ addAccountBtn.addEventListener("click", () => {
  */
 const getFormData = (selector) => {
   let res = {};
-  console.log({
-    selector,
-    finalSelector: `${selector} input`,
-    elements: document.querySelectorAll(`${selector} input`),
-  });
   document
     .querySelectorAll(`${selector} input`)
     .forEach((/** @type {HTMLInputElement | HTMLSelectElement} */ el) => {
@@ -145,48 +136,26 @@ const createAccount = (account) => {
   }
 };
 
-document.getElementById("trial").addEventListener("click", () => {
-  new FormPopup(
-    "SCAM",
-    "HEHE",
-    [
-      {
-        id: "my_id",
-        label: "Name",
-        name: "name",
-        type: "text",
-      },
-      {
-        id: "my_id",
-        label: "Age",
-        name: "age",
-        type: "number",
-      },
-    ],
-    (success, data) => {
-      console.log({ success, data });
-    }
-  ).domElement.showModal();
-});
+function saveData() {
+  localStorage.setItem("data", JSON.stringify(accountHandler.getState()));
+  console.log("Data Saved!");
+}
 
-// Handle window unloading
-window.addEventListener("beforeunload", () => {
-  alert(
-    "You have unsaved data. Please save them before you exit to prevent any progress"
-  );
-});
+// // Handle window unloading
+// window.addEventListener("beforeunload", (event) => {
+//   event.preventDefault();
+//   event.returnValue = "";
+// });
 
 document.addEventListener("keydown", (event) => {
   // Check if the "Ctrl" key and "S" key are pressed simultaneously
   if (event.ctrlKey && event.key === "s") {
     event.preventDefault();
-    const jsonData = JSON.stringify(
-      accountCards.map((card) => {
-        const { domElement, ...props } = card;
-        return props;
-      })
-    );
-    localStorage.setItem("data", jsonData);
-    console.log("Data Saved!");
+    saveData();
+    toastManager.createToast({
+      title: "Success",
+      message: "Accounts Saved Successfully!",
+      type: "success",
+    });
   }
 });

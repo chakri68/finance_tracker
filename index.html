@@ -31,49 +31,63 @@
         <button id="add-account" class="toolbar-item" title="Add New Account">
           <i class="fa-solid fa-plus"></i>
         </button>
-        <button id="delete-account" class="toolbar-item" title="Delete Account">
-          <i class="fa-solid fa-trash"></i>
-        </button>
       </div>
       <div id="account-cards"></div>
-      <button id="trial">OPEN</button>
     </main>
 
+    <div id="toast-container"></div>
+
     <!-- Templates -->
-    <dialog id="confirmation-dialog">
-      <button class="dialog-close">
-        <i class="fa-solid fa-xmark"></i>
-      </button>
-      <h4>Are you sure?</h4>
-      <div class="confirmation-dialog-buttons">
-        <button
-          class="confirmation-dialog-button"
-          id="confirmation-dialog-cancel"
-        >
-          Cancel
-        </button>
-        <button
-          class="confirmation-dialog-button"
-          id="confirmation-dialog-confirm"
-        >
-          Confirm
-        </button>
+
+    <template id="toast-template">
+      <div class="toast clickable-effect">
+        <div class="toast-content">
+          <h3 class="toast-title"></h3>
+          <p class="toast-message"></p>
+        </div>
+        <button class="toast-close clickable-effect">Close</button>
       </div>
-    </dialog>
+    </template>
+
     <template id="account-card-template">
       <div class="account-card card" tabindex="0">
         <div class="account-card-header">
           <div class="account-title"></div>
-          <div class="account-amount"></div>
+          <div class="account-amount">
+            <span class="current-amount"></span>
+            <div class="amount-controls">
+              <button class="minus">
+                <i class="fas fa-minus"></i>
+              </button>
+              <input
+                type="number"
+                class="amount-input"
+                placeholder="Enter new amount"
+              />
+              <button class="plus">
+                <i class="fas fa-plus"></i>
+              </button>
+            </div>
+          </div>
+          <div class="toolbar">
+            <button class="delete-button">Delete</button>
+            <button class="history-button">History</button>
+          </div>
         </div>
         <div class="account-card-body">
-          <div class="account-income"></div>
-          <div class="account-expenses"></div>
+          <div class="expenses">
+            <i class="fa-solid fa-arrow-trend-down graph-icon"></i>
+            <div class="account-expenses">0</div>
+          </div>
+          <div class="income">
+            <div class="account-income">0</div>
+            <i class="fa-solid fa-arrow-trend-up graph-icon"></i>
+          </div>
         </div>
       </div>
     </template>
 
-    <template id="transaction-template">
+    <!-- <template id="transaction-template">
       <div class="transaction">
         <div class="transaction-header">
           <div class="transaction-title">Transaction</div>
@@ -84,7 +98,7 @@
           <div class="transaction-description">Description</div>
         </div>
       </div>
-    </template>
+    </template> -->
 
     <template id="form-template">
       <div class="dynamic-form"></div>
@@ -107,6 +121,19 @@
         <label class="label"></label>
         <input class="input" />
       </div>
+    </template>
+
+    <template id="transaction-history-table-template">
+      <table class="transaction-table">
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Amount</th>
+            <th>type</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
     </template>
 
     <!-- Templates Done -->
